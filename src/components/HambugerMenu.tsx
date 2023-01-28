@@ -3,18 +3,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
+import { Box, Drawer, Typography } from '@mui/material';
 
 export default function HamburgerMenu() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = React.useCallback(() => setOpen(true), []);
+  const handleClose = React.useCallback(() => setOpen(false), []);
 
   return (
     <div>
@@ -23,30 +19,35 @@ export default function HamburgerMenu() {
         edge="start"
         color="inherit"
         aria-label="menu"
-        onClick={handleMenu}
+        onClick={handleOpen}
         sx={{ mr: 2 }}
       >
         <MenuIcon />
       </IconButton>
-        <Menu
-          id="hamburger-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
+      <Drawer anchor="left" open={open} onClose={handleClose}>
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+        }}
         >
-          <MenuItem 
-            onClick={handleClose}
-            component={Link} to="/"
-          >
-            Input
-            </MenuItem>
-          <MenuItem 
-            onClick={handleClose}
-            component={Link} to="/admin"
-          >
-            Admin menu
+          <IconButton color="primary" aria-label="open url in browser" component="label" onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant='h6'>Logo</Typography>
+        </Box>
+        <MenuItem 
+          onClick={handleClose}
+          component={Link} to="/"
+        >
+          Input
           </MenuItem>
-      </Menu>
+        <MenuItem 
+          onClick={handleClose}
+          component={Link} to="/admin"
+        >
+          Admin menu
+        </MenuItem>
+      </Drawer>
     </div>
   );
 }

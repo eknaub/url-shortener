@@ -13,7 +13,7 @@ export default function InputPage() {
 
     var jsonData = {
       "url": inputUrl,
-      "ttlInSeconds": 1
+      "ttlInSeconds": 999999
     }
 
     fetch('https://urlshortener.smef.io/urls', {

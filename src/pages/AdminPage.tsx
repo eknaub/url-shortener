@@ -1,10 +1,10 @@
-import { Box, IconButton, Paper, Table, TableCell, TableBody, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import { Box, Paper, Table, TableCell, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import EditIcon from '@mui/icons-material/Edit';
 import AddUrlDialog from '../components/AddUrlDialog';
 import Container from '@mui/material/Container';
 import DeleteUrlDialog from '../components/DeleteUrlDialog';
+import EditUrlDialog from '../components/EditUrlDialog';
 
 interface Url {
   id: string;
@@ -22,8 +22,42 @@ export default function AdminPage() {
 
   const [urls, setUrls] = React.useState<Url[]>([]);
 
-  const handleEditUrl = (url: Url) => {
-    console.log("edit url " + url.id);
+  const handleEditUrl = (id: string, url: string, ttl: number) => {
+    var jsonData = {
+      "url": url,
+      "ttlInSeconds": ttl
+    }
+
+    fetch(`https://urlshortener.smef.io/urls/${id}`, {
+      method: 'PUT', 
+      headers: { 
+        'Content-Type': "application/json;",
+        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+      },
+      body: JSON.stringify(jsonData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        const newList = urls.map((item) => {
+          if (item.id === data.id) {
+            const updatedItem = {
+              ...item,
+              url: url,
+              ttlInSeconds: ttl,
+              modifiedDate: new Date().toISOString(),
+            };
+    
+            return updatedItem;
+          }
+          return item;
+        });
+    
+        setUrls(newList);
+      })
+      .catch(error => {
+          console.log(error)
+      }
+    )
   };
 
   const handleDeleteUrl = async (id: string) => {
@@ -40,11 +74,27 @@ export default function AdminPage() {
   };
 
   const handleAddUrl = (id: string, url: string, ttl: number) => {
-    const today = new Date();
-    console.log(today.toISOString()); // Returns 2011-10-05T14:48:00.000Z
-    console.log(id);
-    console.log(url);
-    console.log(ttl);
+    var jsonData = {
+      "url": url,
+      "ttlInSeconds": ttl
+    }
+
+    fetch(`https://urlshortener.smef.io/urls/${id}`, {
+      method: 'POST', 
+      headers: { 
+        'Content-Type': "application/json;",
+        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+      },
+      body: JSON.stringify(jsonData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        setUrls([ ...urls, data ]);
+      })
+      .catch(error => {
+          console.log(error)
+      }
+    )
   };
 
   const fetchItems = async () => {
@@ -57,7 +107,6 @@ export default function AdminPage() {
     });
     const items = await data.json();
     setUrls(items);
-    console.log(items);
   }
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -97,11 +146,7 @@ export default function AdminPage() {
                   gap: "8px"
                 }}
                 >
-                  <Tooltip title="Edit">
-                    <IconButton color="primary" aria-label="edit url" component="label" onClick={() => handleEditUrl(elem)}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
+                  <EditUrlDialog pId={elem.id} pUrl={elem.url} pTtl={elem.ttlInSeconds} handleClick={handleEditUrl} />
                   <DeleteUrlDialog id={elem.id} handleClick={() => handleDeleteUrl(elem.id)} />
                 </Box>
               </TableCell>

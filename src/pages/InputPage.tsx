@@ -4,10 +4,14 @@ import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
+import { useTranslation } from 'react-i18next';
 
 export default function InputPage() {
   const [shortenedUrl, setShortenedUrl] = React.useState("");
   const [inputUrl, setInputUrl] = React.useState("");
+
+  const { t } = useTranslation();
+
   const handleShortenURL = React.useCallback(() => {
     let shorten: string = "https://urlshortener.smef.io/";
 
@@ -58,7 +62,7 @@ export default function InputPage() {
       >
         <TextField id="standard-basic" label="URL" variant="standard" onChange={handleURLTextfieldChange}/>
         <Button variant="contained" color="success" endIcon={<SendIcon />} onClick={handleShortenURL}>
-          Shorten
+          {t('inputPageShortenButtonLabel')}
         </Button>
       </Box>
       <Box sx={{
@@ -69,7 +73,7 @@ export default function InputPage() {
         }}
         >
         <Typography variant='h5'>
-          Shortened URL
+          {t('inputPageText')}
         </Typography>
         <Box sx={{
           display: "flex",
@@ -78,13 +82,13 @@ export default function InputPage() {
           gap: "8px"
         }}
         >
-          <Input disabled value={shortenedUrl} placeholder="Shortened URL"/>
-          <Tooltip title="Copy">
+          <Input disabled value={shortenedUrl} placeholder="URL"/>
+          <Tooltip title={t('inputPageTooltipCopy')}>
             <IconButton color="primary" aria-label="copy content" component="label" onClick={() => {navigator.clipboard.writeText(shortenedUrl)}}>
               <ContentCopyIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Open in browser">
+          <Tooltip title={t('inputPageTooltipOpenInBrowser')}>
             <IconButton color="primary" aria-label="open url in browser" component="label" onClick={() => { window.open(shortenedUrl, '_blank'); }}>
               <OpenInBrowserIcon />
             </IconButton>

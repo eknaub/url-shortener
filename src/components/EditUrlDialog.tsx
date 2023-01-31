@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { IconButton, TextField, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useTranslation } from 'react-i18next';
 
 type EditDialogProps = {
   pId: string;
@@ -21,8 +22,7 @@ export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialog
   const [ttl, setTtl] = React.useState(0);
   const [open, setOpen] = React.useState(false);
 
-  React.useEffect(() => {
-  }, []);
+  const { t } = useTranslation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,7 +50,7 @@ export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialog
 
   return (
     <div>
-      <Tooltip title="Edit">
+      <Tooltip title={t('editDialogEditTooltip')}>
         <IconButton color="primary" aria-label="edit url" component="label" onClick={handleClickOpen}>
           <EditIcon />
         </IconButton>
@@ -62,11 +62,11 @@ export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialog
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Edit existing URL"}
+          {t('editDialogTitle')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Here you can edit an existing URL
+            {t('editDialogText')}
           </DialogContentText>
           <TextField
             margin="dense"
@@ -90,8 +90,8 @@ export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialog
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={sendData} autoFocus>Save</Button>
+          <Button onClick={handleClose}>{t('editDialogCancel')}</Button>
+          <Button onClick={sendData} autoFocus>{t('editDialogDelete')}</Button>
         </DialogActions>
       </Dialog>
     </div>

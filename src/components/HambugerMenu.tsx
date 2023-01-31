@@ -1,16 +1,18 @@
 import * as React from 'react';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 import { Box, Drawer, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function HamburgerMenu() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = React.useCallback(() => setOpen(true), []);
   const handleClose = React.useCallback(() => setOpen(false), []);
+
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -39,13 +41,13 @@ export default function HamburgerMenu() {
           onClick={handleClose}
           component={Link} to="/"
         >
-          Input
-          </MenuItem>
+          {t('hamburgerMenuUserInput')}
+        </MenuItem>
         <MenuItem 
           onClick={handleClose}
           component={Link} to="/admin"
         >
-          Admin menu
+          {t('hamburgerMenuAdminMenu')}
         </MenuItem>
       </Drawer>
     </div>

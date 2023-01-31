@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import HamburgerMenu from './HambugerMenu';
 import Logo from './Logo';
 import UserMenu from './UserMenu'
+import LanguageChanger from './LanguageChanger';
 
 export default function Nav() {
   return (
@@ -13,6 +14,7 @@ export default function Nav() {
         <Toolbar>
           <HamburgerMenu/>
           <Logo/>
+          <LanguageChanger/>
           <UserMenu/>
         </Toolbar>
       </AppBar>

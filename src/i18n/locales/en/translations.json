@@ -1,0 +1,33 @@
+{
+  "addDialogTitle": "Add new URL",
+  "addDialogText": "Here you can add a new URL",
+  "addDialogCancel": "Cancel",
+  "addDialogAdd": "Add",
+  "addDialogAddNew": "Add new",
+
+  "deleteDialogTitle": "Delete URL",
+  "deleteDialogText": "Are you sure you want to delete the URL with id \"{{urlId}}\"?",
+  "deleteDialogCancel": "Cancel",
+  "deleteDialogDelete": "Delete",
+  "deleteDialogDeleteTooltip": "Delete",
+
+  "editDialogTitle": "Edit existing URL",
+  "editDialogText": "Here you can edit an existing URL",
+  "editDialogCancel": "Cancel",
+  "editDialogDelete": "Save",
+  "editDialogEditTooltip": "Edit",
+
+  "hamburgerMenuUserInput": "User input",
+  "hamburgerMenuAdminMenu": "Admin menu",
+
+  "userMenuProfile": "Profile",
+  "userMenuMyAccount": "My account",
+
+  "adminPageTableTitleCreatedDate": "Creation date",
+  "adminPageTableTitleModifiedDate": "Modified date",
+
+  "inputPageShortenButtonLabel": "Shorten",
+  "inputPageText": "Shortened URL",
+  "inputPageTooltipCopy": "Copy",
+  "inputPageTooltipOpenInBrowser": "Open in browser"
+}

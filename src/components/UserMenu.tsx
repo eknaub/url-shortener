@@ -3,9 +3,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import { useTranslation } from 'react-i18next';
 
 export default function HamburgerMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  
+  const { t } = useTranslation();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -33,8 +36,8 @@ export default function HamburgerMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>{t('userMenuProfile')}</MenuItem>
+        <MenuItem onClick={handleClose}>{t('userMenuMyAccount')}</MenuItem>
       </Menu>
     </div>
   );

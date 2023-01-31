@@ -5,6 +5,7 @@ import AddUrlDialog from '../components/AddUrlDialog';
 import Container from '@mui/material/Container';
 import DeleteUrlDialog from '../components/DeleteUrlDialog';
 import EditUrlDialog from '../components/EditUrlDialog';
+import { useTranslation } from 'react-i18next';
 
 interface Url {
   id: string;
@@ -15,6 +16,7 @@ interface Url {
 }
 
 export default function AdminPage() {
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     fetchItems();
@@ -128,11 +130,11 @@ export default function AdminPage() {
                 <AddUrlDialog handleClick={handleAddUrl}/>
               </Container>
             </TableCell>
-            <TableCell align="right">id</TableCell>
-            <TableCell align="right">url</TableCell>
-            <TableCell align="right">ttlInSeconds</TableCell>
-            <TableCell align="right">createdDate</TableCell>
-            <TableCell align="right">modifiedDate</TableCell>
+            <TableCell align="right">ID</TableCell>
+            <TableCell align="right">URL</TableCell>
+            <TableCell align="right">TTL</TableCell>
+            <TableCell align="right">{t('adminPageTableTitleCreatedDate')}</TableCell>
+            <TableCell align="right">{t('adminPageTableTitleModifiedDate')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

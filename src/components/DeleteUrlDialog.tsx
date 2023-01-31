@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton, Tooltip} from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type DeleteDialogProps = {
   id: string;
@@ -15,6 +16,8 @@ type DeleteDialogProps = {
 
 export default function DeleteUrlDialog({id, handleClick}: DeleteDialogProps) {
   const [open, setOpen] = React.useState(false);
+
+  const { t } = useTranslation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,7 +29,7 @@ export default function DeleteUrlDialog({id, handleClick}: DeleteDialogProps) {
 
   return (
     <div>
-      <Tooltip title="Delete">
+      <Tooltip title={t('deleteDialogDeleteTooltip')}>
         <IconButton color="primary" aria-label="delete url" component="label" onClick={handleClickOpen}>
           <DeleteIcon />
         </IconButton>
@@ -38,16 +41,16 @@ export default function DeleteUrlDialog({id, handleClick}: DeleteDialogProps) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Delete URL"}
+          {t('deleteDialogTitle')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete the URL with id "{id}"?
+            {t('deleteDialogText', {urlId: id})}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClick} autoFocus>Delete</Button>
+          <Button onClick={handleClose}>{t('deleteDialogCancel')}</Button>
+          <Button onClick={handleClick} autoFocus>{t('deleteDialogDelete')}</Button>
         </DialogActions>
       </Dialog>
     </div>

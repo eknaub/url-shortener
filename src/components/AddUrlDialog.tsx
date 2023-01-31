@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type AddDialogProps = {
   handleClick: (id: string, url: string, ttl: number) => void;
@@ -16,6 +17,8 @@ export default function AddUrlDialog({handleClick}: AddDialogProps) {
   const [url, setUrl] = React.useState("");
   const [ttl, setTtl] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+
+  const { t } = useTranslation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,7 +47,7 @@ export default function AddUrlDialog({handleClick}: AddDialogProps) {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>Add new</Button>
+      <Button variant="contained" onClick={handleClickOpen}>{t('addDialogAddNew')}</Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -52,11 +55,11 @@ export default function AddUrlDialog({handleClick}: AddDialogProps) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Add new URL"}
+          {t('addDialogTitle')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Here you can add a new URL
+            {t('addDialogText')}
           </DialogContentText>
           <TextField
             autoFocus
@@ -88,8 +91,8 @@ export default function AddUrlDialog({handleClick}: AddDialogProps) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={sendData} autoFocus>Add</Button>
+          <Button onClick={handleClose}>{t('addDialogCancel')}</Button>
+          <Button onClick={sendData} autoFocus>{t('addDialogAdd')}</Button>
         </DialogActions>
       </Dialog>
     </div>

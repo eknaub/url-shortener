@@ -9,13 +9,13 @@ import { TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 type AddDialogProps = {
-  handleClick: (id: string, url: string, ttl: number) => void;
+  handleClick: (id: string, url: string, ttl: number | null) => void;
 }
 
 export default function AddUrlDialog({handleClick}: AddDialogProps) {
   const [id, setId] = React.useState<string>("");
   const [url, setUrl] = React.useState<string>("");
-  const [ttl, setTtl] = React.useState<number>(0);
+  const [ttl, setTtl] = React.useState<number | null>(null);
   const [open, setOpen] = React.useState<boolean>(false);
 
   const { t } = useTranslation();

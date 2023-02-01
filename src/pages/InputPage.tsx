@@ -28,7 +28,7 @@ export default function InputPage() {
 
     var jsonData = {
       "url": inputUrl,
-      "ttlInSeconds": 999999
+      "ttlInSeconds": null
     }
 
     await fetch('https://urlshortener.smef.io/urls', {

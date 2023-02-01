@@ -50,13 +50,13 @@ export default function AdminPage() {
     });
   }
 
-  const handleEditUrl = (id: string, url: string, ttl: number) => {
+  const handleEditUrl = async (id: string, url: string, ttl: number) => {
     var jsonData = {
       "url": url,
       "ttlInSeconds": ttl
     }
 
-    fetch(`https://urlshortener.smef.io/urls/${id}`, {
+    await fetch(`https://urlshortener.smef.io/urls/${id}`, {
       method: 'PUT', 
       headers: { 
         'Content-Type': "application/json;",
@@ -131,13 +131,13 @@ export default function AdminPage() {
     });
   };
 
-  const handleAddUrl = (id: string, url: string, ttl: number) => {
+  const handleAddUrl = async (id: string, url: string, ttl: number | null) => {
     var jsonData = {
       "url": url,
       "ttlInSeconds": ttl
     }
 
-    fetch(`https://urlshortener.smef.io/urls/${id}`, {
+    await fetch(`https://urlshortener.smef.io/urls/${id}`, {
       method: 'POST', 
       headers: { 
         'Content-Type': "application/json;",

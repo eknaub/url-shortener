@@ -5,14 +5,23 @@ import SendIcon from '@mui/icons-material/Send';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import { useTranslation } from 'react-i18next';
+import { LastModifiedUrlContext, LastModifiedUrlContextType } from '../components/LastModifiedUrlContext';
 
 export default function InputPage() {
-  const [shortenedUrl, setShortenedUrl] = React.useState("");
-  const [inputUrl, setInputUrl] = React.useState("");
+  const [shortenedUrl, setShortenedUrl] = React.useState<string>("");
+  const [inputUrl, setInputUrl] = React.useState<string>("");
+  const { lastModifiedUrl, setLastModifiedUrl: setUrl } = React.useContext(LastModifiedUrlContext) as LastModifiedUrlContextType;
 
   const { t } = useTranslation();
 
-  const handleShortenURL = React.useCallback(() => {
+  React.useEffect(() => {
+    //Context, Value setzen wenn existiert
+    if(lastModifiedUrl.id !== "") {
+      setInputUrl(lastModifiedUrl.url);
+    }
+  }, [lastModifiedUrl]);
+
+  const handleShortenURL = async () => {
     let shorten: string = "https://urlshortener.smef.io/";
 
     var jsonData = {
@@ -20,7 +29,7 @@ export default function InputPage() {
       "ttlInSeconds": 999999
     }
 
-    fetch('https://urlshortener.smef.io/urls', {
+    await fetch('https://urlshortener.smef.io/urls', {
       method: 'POST', 
       headers: { 
         'Content-Type': "application/json;",
@@ -31,14 +40,15 @@ export default function InputPage() {
       .then(response => response.json())
       .then(data => {
         setShortenedUrl(shorten + data.id);
+        setUrl(data);
       })
       .catch(error => {
           console.log(error)
       }
     )
-  }, [inputUrl]);
+  };
 
-  const handleURLTextfieldChange = function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+  const handleURLTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setInputUrl(event.target.value);
   };
 
@@ -60,7 +70,7 @@ export default function InputPage() {
         gap: "32px"
       }}
       >
-        <TextField id="standard-basic" label="URL" variant="standard" onChange={handleURLTextfieldChange}/>
+        <TextField id="standard-basic" label="URL" variant="standard" value={inputUrl} onChange={handleURLTextfieldChange}/>
         <Button variant="contained" color="success" endIcon={<SendIcon />} onClick={handleShortenURL}>
           {t('inputPageShortenButtonLabel')}
         </Button>

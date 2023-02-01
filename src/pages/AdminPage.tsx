@@ -6,23 +6,19 @@ import Container from '@mui/material/Container';
 import DeleteUrlDialog from '../components/DeleteUrlDialog';
 import EditUrlDialog from '../components/EditUrlDialog';
 import { useTranslation } from 'react-i18next';
+import { LastModifiedUrlContext, LastModifiedUrlContextType } from '../components/LastModifiedUrlContext';
+import { IUrl } from '../components/IUrl';
 
-interface Url {
-  id: string;
-  url: string;
-  ttlInSeconds: number;
-  createdDate: string;
-  modifiedDate: string;
-}
 
-export default function AdminPage() {
+export default function AdminPage() {  
+  const { lastModifiedUrl, setLastModifiedUrl } = React.useContext(LastModifiedUrlContext) as LastModifiedUrlContextType;
   const { t } = useTranslation();
 
   React.useEffect(() => {
     fetchItems();
   }, []);
 
-  const [urls, setUrls] = React.useState<Url[]>([]);
+  const [urls, setUrls] = React.useState<IUrl[]>([]);
 
   const handleEditUrl = (id: string, url: string, ttl: number) => {
     var jsonData = {
@@ -48,7 +44,7 @@ export default function AdminPage() {
               ttlInSeconds: ttl,
               modifiedDate: new Date().toISOString(),
             };
-    
+            setLastModifiedUrl(updatedItem);
             return updatedItem;
           }
           return item;
@@ -119,7 +115,7 @@ export default function AdminPage() {
       border: 0,
     },
   }));
-
+  
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -139,7 +135,8 @@ export default function AdminPage() {
         </TableHead>
         <TableBody>
           {urls.map((elem) => (
-            <StyledTableRow key={elem.id}>
+            <StyledTableRow key={elem.id}
+                style = { elem.id === lastModifiedUrl.id ? { backgroundColor: "#ff9191" } : { }}>
               <TableCell component="th" scope="row">
                 <Box sx={{
                   display: "flex",

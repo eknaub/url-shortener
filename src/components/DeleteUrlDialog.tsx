@@ -15,8 +15,8 @@ type DeleteDialogProps = {
 }
 
 export default function DeleteUrlDialog({id, handleClick}: DeleteDialogProps) {
-  const [open, setOpen] = React.useState(false);
-
+  const [open, setOpen] = React.useState<boolean>(false);
+  
   const { t } = useTranslation();
 
   const handleClickOpen = () => {

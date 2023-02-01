@@ -17,10 +17,10 @@ type EditDialogProps = {
 }
 
 export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialogProps) {
-  const [id, setId] = React.useState("");
-  const [url, setUrl] = React.useState("");
-  const [ttl, setTtl] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
+  const [id, setId] = React.useState<string>("");
+  const [url, setUrl] = React.useState<string>("");
+  const [ttl, setTtl] = React.useState<number>(0);
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const { t } = useTranslation();
 
@@ -40,11 +40,11 @@ export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialog
     handleClick(id, url, ttl);
   }
 
-  const handleUrlTextfieldChange = function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+  const handleUrlTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setUrl(event.target.value);
   };
 
-  const handleTtlTextfieldChange = function(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+  const handleTtlTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setTtl(parseInt(event.target.value));
   };
 

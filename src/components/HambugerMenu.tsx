@@ -8,7 +8,7 @@ import { Box, Drawer, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 export default function HamburgerMenu() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const handleOpen = React.useCallback(() => setOpen(true), []);
   const handleClose = React.useCallback(() => setOpen(false), []);
 

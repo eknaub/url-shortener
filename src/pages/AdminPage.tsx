@@ -208,7 +208,7 @@ export default function AdminPage() {
           <TableBody>
             {urls.map((elem) => (
               <StyledTableRow key={elem.id}
-                  style = { elem.id === lastModifiedUrl.id ? { backgroundColor: "#ff9191" } : { }}>
+                  style = { elem.id === lastModifiedUrl.id ? { backgroundColor: "#e1ffd7" } : { }}>
                 <TableCell component="th" scope="row">
                   <Box sx={{
                     display: "flex",

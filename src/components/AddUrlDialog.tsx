@@ -31,6 +31,9 @@ export default function AddUrlDialog({handleClick}: AddDialogProps) {
   const sendData = () => {
     handleClose();
     handleClick(id, url, ttl);
+    setId("");
+    setUrl("");
+    setTtl(0);
   }
   
   const handleIdTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {

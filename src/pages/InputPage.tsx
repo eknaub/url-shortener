@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Container, IconButton, Input, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Button, Container, IconButton, Input, Snackbar, Tooltip, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import SendIcon from '@mui/icons-material/Send';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -11,11 +11,13 @@ export default function InputPage() {
   const [shortenedUrl, setShortenedUrl] = React.useState<string>("");
   const [inputUrl, setInputUrl] = React.useState<string>("");
   const { lastModifiedUrl, setLastModifiedUrl: setUrl } = React.useContext(LastModifiedUrlContext) as LastModifiedUrlContextType;
+  const [errorMessage, setErrorMessage] = React.useState<string>("")
+  const [openErrorSnackbar, setOpenErrorSnackbar] = React.useState<boolean>(false);
 
   const { t } = useTranslation();
 
   React.useEffect(() => {
-    //Context, Value setzen wenn existiert
+    //Context Api, set value if exists
     if(lastModifiedUrl.id !== "") {
       setInputUrl(lastModifiedUrl.url);
     }
@@ -38,18 +40,37 @@ export default function InputPage() {
       body: JSON.stringify(jsonData)
       })
       .then(response => response.json())
-      .then(data => {
-        setShortenedUrl(shorten + data.id);
-        setUrl(data);
+      .then(data => { 
+        //if error exists show snackbar, else set data
+        if(data.status) {
+          if(data.invalidParams) {
+            setErrorMessage(data.title + ": " + data.invalidParams[0].name + " " + data.invalidParams[0].reason);
+          }
+          else {
+            setErrorMessage(data.title + ": " + data.detail);
+          }
+          setOpenErrorSnackbar(true);
+        }
+        else {
+          setShortenedUrl(shorten + data.id);
+          setUrl(data);
+        }
       })
       .catch(error => {
-          console.log(error)
-      }
-    )
+          console.log(error);
+      });
   };
 
   const handleURLTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setInputUrl(event.target.value);
+  };
+
+  const handleErrorSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenErrorSnackbar(false);
   };
 
   return (
@@ -63,6 +84,11 @@ export default function InputPage() {
       gap: "75px"
     }}
     >
+      {errorMessage && 
+        <Snackbar open={openErrorSnackbar} autoHideDuration={3000} onClose={handleErrorSnackbarClose}>
+          <Alert severity="warning" onClose={handleErrorSnackbarClose}>{errorMessage}</Alert>
+        </Snackbar>
+      }
       <Box sx={{
         display: "flex",
         alignItems: "center",

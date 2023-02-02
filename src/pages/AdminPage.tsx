@@ -1,13 +1,13 @@
 import { Box, Paper, Table, TableCell, TableBody, TableContainer, TableHead, TableRow, Snackbar, Alert } from '@mui/material';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import AddUrlDialog from './AddUrlDialog';
+import AddUrlDialog from '../components/AdminPage/AddUrlDialog';
 import Container from '@mui/material/Container';
-import DeleteUrlDialog from './DeleteUrlDialog';
-import EditUrlDialog from './EditUrlDialog';
+import DeleteUrlDialog from '../components/AdminPage/DeleteUrlDialog';
+import EditUrlDialog from '../components/AdminPage/EditUrlDialog';
 import { useTranslation } from 'react-i18next';
-import { LastModifiedUrlContext, LastModifiedUrlContextType } from '../../context/LastModifiedUrlContext';
-import { IUrl } from '../../models/IUrl';
+import { LastModifiedUrlContext, LastModifiedUrlContextType } from '../context/LastModifiedUrlContext';
+import { IUrl } from '../models/IUrl';
 
 
 export default function AdminPage() {  

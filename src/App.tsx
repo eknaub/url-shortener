@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import ErrorBoundary from './services/ErrorBoundary';
 import { LastModifiedUrlProvider } from './context/LastModifiedUrlContext';
 import Nav from './components/NavBar/Nav';
-import AdminPage from './pages/AdminPage/AdminPage';
+import AdminPage from './pages/AdminPage';
 import InputPage from './pages/InputPage';
 
 function App() {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IUrl } from './IUrl';
+import { IUrl } from '../models/IUrl';
 
 export type LastModifiedUrlContextType = {
   lastModifiedUrl: IUrl;

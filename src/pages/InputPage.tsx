@@ -5,7 +5,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import { useTranslation } from 'react-i18next';
-import { LastModifiedUrlContext, LastModifiedUrlContextType } from '../components/LastModifiedUrlContext';
+import { LastModifiedUrlContext, LastModifiedUrlContextType } from '../context/LastModifiedUrlContext';
 
 export default function InputPage() {
   const [shortenedUrl, setShortenedUrl] = React.useState<string>("");

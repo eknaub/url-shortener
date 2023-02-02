@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import ErrorBoundary from './components/ErrorBoundary';
-import { LastModifiedUrlProvider } from './components/LastModifiedUrlContext';
-import Nav from './components/Nav';
-import AdminPage from './pages/AdminPage';
+import ErrorBoundary from './services/ErrorBoundary';
+import { LastModifiedUrlProvider } from './context/LastModifiedUrlContext';
+import Nav from './components/NavBar/Nav';
+import AdminPage from './pages/AdminPage/AdminPage';
 import InputPage from './pages/InputPage';
 
 function App() {

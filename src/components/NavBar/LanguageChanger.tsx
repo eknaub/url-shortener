@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import useCurrentLanguage from './useCurrentLanguage';
+import useCurrentLanguage from '../../hooks/useCurrentLanguage';
 
 export default function LanguageChanger() {
   const {language, setLanguage} = useCurrentLanguage(localStorage.getItem("lang") || 'en');

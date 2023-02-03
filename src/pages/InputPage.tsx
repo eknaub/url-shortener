@@ -11,6 +11,8 @@ export default function InputPage() {
   const [shortenedUrl, setShortenedUrl] = React.useState<string>("");
   const [inputUrl, setInputUrl] = React.useState<string>("");
   const { lastModifiedUrl, setLastModifiedUrl: setUrl } = React.useContext(LastModifiedUrlContext) as LastModifiedUrlContextType;
+  const [warningMessage, setWarningMessage] = React.useState<string>("")
+  const [openWarningSnackbar, setOpenWarningSnackbar] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string>("")
   const [openErrorSnackbar, setOpenErrorSnackbar] = React.useState<boolean>(false);
   const user: string = process.env.REACT_APP_USER_NAME + ":" + process.env.REACT_APP_PASSWORD;  
@@ -40,17 +42,23 @@ export default function InputPage() {
       },
       body: JSON.stringify(jsonData)
       })
-      .then(response => response.json())
+      .then(response => {
+        if(!response.ok) {
+          throw Error("Something went wrong ...");
+        }
+
+        return response.json();
+      })
       .then(data => { 
         //if error exists show snackbar, else set data
         if(data.status) {
           if(data.invalidParams) {
-            setErrorMessage(data.title + ": " + data.invalidParams[0].name + " " + data.invalidParams[0].reason);
+            setWarningMessage(data.title + ": " + data.invalidParams[0].name + " " + data.invalidParams[0].reason);
           }
           else {
-            setErrorMessage(data.title + ": " + data.detail);
+            setWarningMessage(data.title + ": " + data.detail);
           }
-          setOpenErrorSnackbar(true);
+          setOpenWarningSnackbar(true);
         }
         else {
           setShortenedUrl(shorten + data.id);
@@ -58,7 +66,8 @@ export default function InputPage() {
         }
       })
       .catch(error => {
-          console.log(error);
+        setErrorMessage(error.message);
+        setOpenErrorSnackbar(true);
       });
   };
 
@@ -74,6 +83,14 @@ export default function InputPage() {
     setOpenErrorSnackbar(false);
   };
 
+  const handleWarningSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenWarningSnackbar(false);
+  };
+
   return (
     <Container sx={{
       width: "100vw",
@@ -85,9 +102,14 @@ export default function InputPage() {
       gap: "75px"
     }}
     >
+      {warningMessage && 
+        <Snackbar open={openWarningSnackbar} autoHideDuration={3000} onClose={handleWarningSnackbarClose}>
+          <Alert severity="warning" onClose={handleWarningSnackbarClose}>{warningMessage}</Alert>
+        </Snackbar>
+      }
       {errorMessage && 
         <Snackbar open={openErrorSnackbar} autoHideDuration={3000} onClose={handleErrorSnackbarClose}>
-          <Alert severity="warning" onClose={handleErrorSnackbarClose}>{errorMessage}</Alert>
+          <Alert severity="error" onClose={handleErrorSnackbarClose}>{errorMessage}</Alert>
         </Snackbar>
       }
       <Box sx={{

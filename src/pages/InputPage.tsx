@@ -13,6 +13,7 @@ export default function InputPage() {
   const { lastModifiedUrl, setLastModifiedUrl: setUrl } = React.useContext(LastModifiedUrlContext) as LastModifiedUrlContextType;
   const [errorMessage, setErrorMessage] = React.useState<string>("")
   const [openErrorSnackbar, setOpenErrorSnackbar] = React.useState<boolean>(false);
+  const user: string = process.env.REACT_APP_USER_NAME + ":" + process.env.REACT_APP_PASSWORD;  
 
   const { t } = useTranslation();
 
@@ -25,17 +26,17 @@ export default function InputPage() {
 
   const handleShortenURL = async () => {
     let shorten: string = "https://urlshortener.smef.io/";
-
+    
     var jsonData = {
       "url": inputUrl,
       "ttlInSeconds": null
     }
-
+    
     await fetch('https://urlshortener.smef.io/urls', {
       method: 'POST', 
       headers: { 
         'Content-Type': "application/json;",
-        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+        'Authorization': `Basic ${btoa(user)}`,
       },
       body: JSON.stringify(jsonData)
       })

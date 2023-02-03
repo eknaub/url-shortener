@@ -15,6 +15,7 @@ export default function AdminPage() {
   const { lastModifiedUrl, setLastModifiedUrl } = React.useContext(LastModifiedUrlContext) as LastModifiedUrlContextType;
   const [errorMessage, setErrorMessage] = React.useState<string>("")
   const [openErrorSnackbar, setOpenErrorSnackbar] = React.useState<boolean>(false);
+  const user: string = process.env.REACT_APP_USER_NAME + ":" + process.env.REACT_APP_PASSWORD;  
 
   const { t } = useTranslation();
 
@@ -27,7 +28,7 @@ export default function AdminPage() {
       method: 'GET', 
       headers: { 
         'Content-Type': "application/json;",
-        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+        'Authorization': `Basic ${btoa(user)}`,
       },
     })
     .then(response => response.json())
@@ -60,7 +61,7 @@ export default function AdminPage() {
       method: 'PUT', 
       headers: { 
         'Content-Type': "application/json;",
-        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+        'Authorization': `Basic ${btoa(user)}`,
       },
       body: JSON.stringify(jsonData)
       })
@@ -103,7 +104,7 @@ export default function AdminPage() {
       method: 'DELETE', 
       headers: { 
         'Content-Type': "application/json;",
-        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+        'Authorization': `Basic ${btoa(user)}`,
       },
     })
     .then(response => {
@@ -141,7 +142,7 @@ export default function AdminPage() {
       method: 'POST', 
       headers: { 
         'Content-Type': "application/json;",
-        'Authorization': `Basic ${btoa('abat:5hWDEcFK4FUW')}`,
+        'Authorization': `Basic ${btoa(user)}`,
       },
       body: JSON.stringify(jsonData)
     })

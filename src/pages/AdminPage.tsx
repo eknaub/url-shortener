@@ -25,8 +25,8 @@ export default function AdminPage() {
     fetchItems();
   }, []);
 
-  const fetchItems = async () => {
-    await fetch('https://urlshortener.smef.io/urls', {
+  const fetchItems = () => {
+    fetch('https://urlshortener.smef.io/urls', {
       method: 'GET', 
       headers: { 
         'Content-Type': "application/json;",
@@ -34,7 +34,9 @@ export default function AdminPage() {
       },
     })
     .then(response => {
-      if(!response.ok) {
+      if(response.status !== 200 &&
+        response.status !== 400 &&
+        response.status !== 500) {
         throw Error("Something went wrong ...");
       }
 
@@ -60,13 +62,13 @@ export default function AdminPage() {
     });
   }
 
-  const handleEditUrl = async (id: string, url: string, ttl: number) => {
+  const handleEditUrl = (id: string, url: string, ttl: number) => {
     var jsonData = {
       "url": url,
       "ttlInSeconds": ttl
     }
 
-    await fetch(`https://urlshortener.smef.io/urls/${id}`, {
+    fetch(`https://urlshortener.smef.io/urls/${id}`, {
       method: 'PUT', 
       headers: { 
         'Content-Type': "application/json;",
@@ -75,7 +77,10 @@ export default function AdminPage() {
       body: JSON.stringify(jsonData)
       })
       .then(response => {
-        if(!response.ok) {
+        if(response.status !== 200 &&
+          response.status !== 400 &&
+          response.status !== 404 &&
+          response.status !== 500) {
           throw Error("Something went wrong ...");
         }
 
@@ -115,8 +120,8 @@ export default function AdminPage() {
       });
   };
 
-  const handleDeleteUrl = async (id: string) => {
-    await fetch(`https://urlshortener.smef.io/urls/${id}`, {
+  const handleDeleteUrl = (id: string) => {
+    fetch(`https://urlshortener.smef.io/urls/${id}`, {
       method: 'DELETE', 
       headers: { 
         'Content-Type': "application/json;",
@@ -124,12 +129,12 @@ export default function AdminPage() {
       },
     })
     .then(response => {
-      if(!response.ok) {
-        return response.json();
-      }
-      else {
+      if(response.status === 204) {
         const newList = urls.filter((item) => item.id !== id);
         setUrls(newList);
+      }
+      else {
+        return response.json();
       }
     })
     .then(data => { 
@@ -149,13 +154,13 @@ export default function AdminPage() {
     });
   };
 
-  const handleAddUrl = async (id: string, url: string, ttl: number | null) => {
+  const handleAddUrl = (id: string, url: string, ttl: number | null) => {
     var jsonData = {
       "url": url,
       "ttlInSeconds": ttl
     }
 
-    await fetch(`https://urlshortener.smef.io/urls/${id}`, {
+    fetch(`https://urlshortener.smef.io/urls/${id}`, {
       method: 'POST', 
       headers: { 
         'Content-Type': "application/json;",
@@ -164,6 +169,12 @@ export default function AdminPage() {
       body: JSON.stringify(jsonData)
     })
     .then(response => {
+      if(response.status !== 200 &&
+        response.status !== 400 &&
+        response.status !== 409 &&
+        response.status !== 500) {
+        throw Error("Something went wrong ...");
+      }
 
       return response.json();
     })

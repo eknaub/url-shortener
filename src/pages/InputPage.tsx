@@ -26,7 +26,7 @@ export default function InputPage() {
     }
   }, [lastModifiedUrl]);
 
-  const handleShortenURL = async () => {
+  const handleShortenURL = () => {
     let shorten: string = "https://urlshortener.smef.io/";
     
     var jsonData = {
@@ -34,7 +34,7 @@ export default function InputPage() {
       "ttlInSeconds": null
     }
     
-    await fetch('https://urlshortener.smef.io/urls', {
+    fetch('https://urlshortener.smef.io/urls', {
       method: 'POST', 
       headers: { 
         'Content-Type': "application/json;",
@@ -43,7 +43,10 @@ export default function InputPage() {
       body: JSON.stringify(jsonData)
       })
       .then(response => {
-        if(!response.ok) {
+        if(response.status !== 200 &&
+          response.status !== 400 &&
+          response.status !== 500) {
+          //Unknown error handling
           throw Error("Something went wrong ...");
         }
 

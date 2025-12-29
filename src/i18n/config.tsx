@@ -1,21 +1,23 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import enTranslations from "./locales/en/translations.json";
+import deTranslations from "./locales/de/translations.json";
 
 i18n.use(initReactI18next).init({
-  fallbackLng: 'en',
-  lng: localStorage.getItem("lang") || 'en',
+  fallbackLng: "en",
+  lng: localStorage.getItem("lang") || "en",
   resources: {
     en: {
-      translations: require('./locales/en/translations.json')
+      translations: enTranslations,
     },
     de: {
-      translations: require('./locales/de/translations.json')
-    }
+      translations: deTranslations,
+    },
   },
-  ns: ['translations'],
-  defaultNS: 'translations'
+  ns: ["translations"],
+  defaultNS: "translations",
 });
 
-i18n.languages = ['en', 'de'];
+i18n.languages = ["en", "de"];
 
 export default i18n;

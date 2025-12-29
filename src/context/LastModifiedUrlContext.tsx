@@ -1,19 +1,26 @@
-import * as React from 'react';
-import { IUrl } from '../models/IUrl';
+import * as React from "react";
+import type { IUrl } from "../models/IUrl";
 
 export type LastModifiedUrlContextType = {
   lastModifiedUrl: IUrl;
   setLastModifiedUrl: (url: IUrl) => void;
 };
 
-export const LastModifiedUrlContext = React.createContext<LastModifiedUrlContextType | null>(null);
+export const LastModifiedUrlContext =
+  React.createContext<LastModifiedUrlContextType | null>(null);
 
 type Props = {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 };
 
 export const LastModifiedUrlProvider: React.FC<Props> = ({ children }) => {
-  const [lastModifiedUrl, setUrlState] = React.useState<IUrl>({id: "", url: "", createdDate: "", modifiedDate: "", ttlInSeconds: 0});
+  const [lastModifiedUrl, setUrlState] = React.useState<IUrl>({
+    id: "",
+    url: "",
+    createdDate: "",
+    modifiedDate: "",
+    ttlInSeconds: 0,
+  });
 
   const setLastModifiedUrl = (url: IUrl) => {
     setUrlState(url);
@@ -21,7 +28,7 @@ export const LastModifiedUrlProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <LastModifiedUrlContext.Provider
-    value={{ lastModifiedUrl, setLastModifiedUrl }}
+      value={{ lastModifiedUrl, setLastModifiedUrl }}
     >
       {children}
     </LastModifiedUrlContext.Provider>

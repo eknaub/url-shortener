@@ -1,30 +1,36 @@
-import { Route, Routes } from 'react-router-dom';
-import ErrorBoundary from './services/ErrorBoundary';
-import { LastModifiedUrlProvider } from './context/LastModifiedUrlContext';
-import Nav from './components/NavBar/Nav';
-import AdminPage from './pages/AdminPage';
-import InputPage from './pages/InputPage';
+import { Route, Routes } from "react-router-dom";
+import ErrorBoundary from "./services/ErrorBoundary";
+import { LastModifiedUrlProvider } from "./context/LastModifiedUrlContext";
+import Nav from "./components/NavBar/Nav";
+import AdminPage from "./pages/AdminPage";
+import InputPage from "./pages/InputPage";
 
 function App() {
   return (
     <div className="App">
-        <Nav/>
-        <Routes>
-          <Route path="/" element= {
+      <Nav />
+      <Routes>
+        <Route
+          path="/"
+          element={
             <ErrorBoundary>
               <LastModifiedUrlProvider>
-                <InputPage/>
+                <InputPage />
               </LastModifiedUrlProvider>
             </ErrorBoundary>
-          } />
-          <Route path="/admin" element= {
+          }
+        />
+        <Route
+          path="/admin"
+          element={
             <ErrorBoundary>
               <LastModifiedUrlProvider>
-                <AdminPage/>
+                <AdminPage />
               </LastModifiedUrlProvider>
             </ErrorBoundary>
-          } />
-        </Routes>
+          }
+        />
+      </Routes>
     </div>
   );
 }

@@ -1,101 +1,87 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { TextField } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import type { IUrlCreate } from "../../models/IUrl";
+import useVisibilityHook from "../../hooks/useVisibilityHook";
 
-type AddDialogProps = {
-  handleClick: (id: string, url: string, ttl: number | null) => void;
+interface AddDialogProps {
+  handleClick: (url: IUrlCreate) => void;
 }
 
-export default function AddUrlDialog({handleClick}: AddDialogProps) {
-  const [id, setId] = React.useState<string>("");
-  const [url, setUrl] = React.useState<string>("");
-  const [ttl, setTtl] = React.useState<number | null>(null);
-  const [open, setOpen] = React.useState<boolean>(false);
-
+export default function AddUrlDialog(props: Readonly<AddDialogProps>) {
+  const [url, setUrl] = useState<IUrlCreate>({
+    id: "",
+    url: "",
+    ttlInSeconds: 0,
+  });
+  const { open, handleClickOpen, handleClose } = useVisibilityHook();
   const { t } = useTranslation();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const updateUrl = (field: string, value: string | number) => {
+    setUrl((prevUrl) => ({
+      ...prevUrl,
+      [field]: value,
+    }));
   };
 
   const sendData = () => {
     handleClose();
-    handleClick(id, url, ttl);
-    setId("");
-    setUrl("");
-    setTtl(0);
-  }
-  
-  const handleIdTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setId(event.target.value);
-  };
-
-  const handleUrlTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setUrl(event.target.value);
-  };
-
-  const handleTtlTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setTtl(parseInt(event.target.value));
+    props.handleClick(url);
+    setUrl({ id: "", url: "", ttlInSeconds: 0 });
   };
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>{t('addDialogAddNew')}</Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {t('addDialogTitle')}
-        </DialogTitle>
+      <Button variant="contained" onClick={handleClickOpen}>
+        {t("addDialogAddNew")}
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{t("addDialogTitle")}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {t('addDialogText')}
-          </DialogContentText>
+          <DialogContentText>{t("addDialogText")}</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="id"
+            name="id"
             label="ID"
             type="text"
             fullWidth
             variant="standard"
-            onChange={handleIdTextfieldChange}
+            onChange={(e) => updateUrl(e.target.name, e.target.value)}
           />
           <TextField
             margin="dense"
-            id="name"
+            id="url"
+            name="url"
             label="URL"
             type="text"
             fullWidth
             variant="standard"
-            onChange={handleUrlTextfieldChange}
+            onChange={(e) => updateUrl(e.target.name, e.target.value)}
           />
           <TextField
             margin="dense"
-            id="name"
+            id="ttlInSeconds"
+            name="ttlInSeconds"
             label="ttl"
             type="number"
             fullWidth
             variant="standard"
-            onChange={handleTtlTextfieldChange}
+            onChange={(e) => updateUrl(e.target.name, e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{t('addDialogCancel')}</Button>
-          <Button onClick={sendData} autoFocus>{t('addDialogAdd')}</Button>
+          <Button onClick={handleClose}>{t("addDialogCancel")}</Button>
+          <Button onClick={sendData} autoFocus>
+            {t("addDialogAdd")}
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

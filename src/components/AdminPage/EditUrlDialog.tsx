@@ -1,97 +1,95 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { IconButton, TextField, Tooltip } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import { useTranslation } from 'react-i18next';
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { IconButton, TextField, Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import { useTranslation } from "react-i18next";
+import type { IUrlCreate } from "../../models/IUrl";
+import { useState } from "react";
+import useVisibilityHook from "../../hooks/useVisibilityHook";
 
-type EditDialogProps = {
-  pId: string;
-  pUrl: string;
-  pTtl: number;
-  handleClick: (id: string, url: string, ttl: number) => void;
+interface EditDialogProps {
+  url: IUrlCreate;
+  handleClick: (url: IUrlCreate) => void;
 }
 
-export default function EditUrlDialog({pId, pUrl, pTtl, handleClick}: EditDialogProps) {
-  const [id, setId] = React.useState<string>("");
-  const [url, setUrl] = React.useState<string>("");
-  const [ttl, setTtl] = React.useState<number>(0);
-  const [open, setOpen] = React.useState<boolean>(false);
-
+export default function EditUrlDialog(props: Readonly<EditDialogProps>) {
+  const [url, setUrl] = useState<IUrlCreate>({
+    id: "",
+    url: "",
+    ttlInSeconds: 0,
+  });
   const { t } = useTranslation();
+  const { open, handleClickOpen, handleClose } = useVisibilityHook();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-    setId(pId);
-    setUrl(pUrl);
-    setTtl(pTtl);
+  const updateUrl = (field: string, value: string | number) => {
+    setUrl((prevUrl) => ({
+      ...prevUrl,
+      [field]: value,
+    }));
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const openEditUrlDialog = () => {
+    handleClickOpen();
+    setUrl({
+      id: props.url.id,
+      url: props.url.url,
+      ttlInSeconds: props.url.ttlInSeconds,
+    });
   };
 
   const sendData = () => {
     handleClose();
-    handleClick(id, url, ttl);
-  }
-
-  const handleUrlTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setUrl(event.target.value);
-  };
-
-  const handleTtlTextfieldChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setTtl(parseInt(event.target.value));
+    props.handleClick(url);
   };
 
   return (
     <div>
-      <Tooltip title={t('editDialogEditTooltip')}>
-        <IconButton color="primary" aria-label="edit url" component="label" onClick={handleClickOpen}>
+      <Tooltip title={t("editDialogEditTooltip")}>
+        <IconButton
+          color="primary"
+          aria-label="edit url"
+          component="label"
+          onClick={openEditUrlDialog}
+        >
           <EditIcon />
         </IconButton>
       </Tooltip>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {t('editDialogTitle')}
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{t("editDialogTitle")}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {t('editDialogText')}
-          </DialogContentText>
+          <DialogContentText>{t("editDialogText")}</DialogContentText>
           <TextField
             margin="dense"
-            id="name"
+            id="url"
+            name="url"
             label="URL"
             type="text"
-            defaultValue={url}
+            defaultValue={props.url.url}
             fullWidth
             variant="standard"
-            onChange={handleUrlTextfieldChange}
+            onChange={(e) => updateUrl(e.target.name, e.target.value)}
           />
           <TextField
             margin="dense"
-            id="name"
+            id="ttl"
+            name="ttl"
             label="ttl"
             type="number"
-            defaultValue={ttl}
+            defaultValue={props.url.ttlInSeconds}
             fullWidth
             variant="standard"
-            onChange={handleTtlTextfieldChange}
+            onChange={(e) => updateUrl(e.target.name, parseInt(e.target.value))}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{t('editDialogCancel')}</Button>
-          <Button onClick={sendData} autoFocus>{t('editDialogDelete')}</Button>
+          <Button onClick={handleClose}>{t("editDialogCancel")}</Button>
+          <Button onClick={sendData} autoFocus>
+            {t("editDialogDelete")}
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
